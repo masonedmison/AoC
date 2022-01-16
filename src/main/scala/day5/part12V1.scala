@@ -2,7 +2,7 @@ package day5
 
 import Math.{ max, min }
 
-object part1 extends App {
+object part12V1 extends App {
 
   // thread state vs accumulate a list and build state from this list at end?
   case class FSM[S, I](run: (S, I) => S)
@@ -26,6 +26,16 @@ object part1 extends App {
       case _                     => throw new Exception(s"Unable to parse pair of Points from $s")
     }
   }
+
+  def parseInput: List[(Point, Point)] =
+    ext.lib
+      .readAll("puzzle5-input.txt")
+      // .readall("day5-example.txt")
+      .split("\\n")
+      .map(_.trim)
+      .filter(_.nonEmpty)
+      .map(Point.fromStringPair)
+      .toList
 
   type Diagram = Vector[Vector[Int]]
 
@@ -56,14 +66,7 @@ object part1 extends App {
       }
   }
 
-  val inPointPairs: List[(Point, Point)] = ext.lib
-    .readAll("puzzle5-input.txt")
-    // .readAll("day5-example.txt")
-    .split("\\n")
-    .map(_.trim)
-    .filter(_.nonEmpty)
-    .map(Point.fromStringPair)
-    .toList
+  val inPointPairs = parseInput
 
   val (xDim, yDim) = inPointPairs.foldRight((0, 0)) {
     case (pair, (maxX, maxY)) =>
